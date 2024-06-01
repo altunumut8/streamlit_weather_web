@@ -7,11 +7,16 @@ import boto3
 from geopy.geocoders import Nominatim
 import requests
 import branca.colormap as cm
+import os
+
 
 # Initialize DynamoDB
-dynamodb = boto3.resource('dynamodb', region_name='us-east-1')  # Replace 'your-region' with your AWS region
-table = dynamodb.Table('CityTemperatures')
-
+dynamodb = boto3.resource(
+    'dynamodb',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    region_name=os.getenv('AWS_DEFAULT_REGION')
+)
 # Function to get recent temperature data from DynamoDB
 def get_recent_temperature_data():
     response = table.scan()
